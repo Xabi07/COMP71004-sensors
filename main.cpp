@@ -10,6 +10,7 @@ DigitalOut led1(LED1);
 UnbufferedSerial pc(USBTX, USBRX); //Serial Port (UART) set up
 char buff; //used to collect data from the srial port
 volatile int flag = 0; //used to set a flag when a interrupt on the serial port is set
+volatile char parse =0;
 
 // objects for various sensors
 static DevI2C devI2c(PB_11,PB_10);
@@ -123,7 +124,16 @@ int main() {
     
     while(1) {
         if(flag == 1){ // if the interrupt is set do the next action i.e. print accelerator data
-            print_accel(); //prints accelerator data
+            //print_accel(); //prints accelerator data
+            switch(buff) {      //Uses a switch statement to print the accelererometer when A is pressed in the cooltherm terminal
+                case 'A':       //if A is pressed do the next line/action
+                print_accel(); //prints accelerator data
+                break;
+                case 'B':       //if B is pressed just print a new line
+                printf("\nJust prints a new line.\r\n");
+                break;
+
+            }
             flag = 0;       //resets the flag, until next interrupt
         }
         //flag = 0;
